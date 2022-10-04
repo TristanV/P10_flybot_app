@@ -10,8 +10,10 @@ class DefaultConfig:
     """Configuration for the bot."""
 
     PORT = 3978
-    APP_ID = os.environ.get("MicrosoftAppId", "")
-    APP_PASSWORD = os.environ.get("MicrosoftAppPassword", "")
+    #note that the user managed identity has no password (blank) but the environment variable cannot be blank, so we use a single space that needs to be removed
+    #we also want to test the bot before registering it on azure. in this case the MicrosoftAppId must remain blank too in the environment variables 
+    APP_ID = os.environ.get("MicrosoftAppId", "").strip()  
+    APP_PASSWORD = os.environ.get("MicrosoftAppPassword", "").strip()
     LUIS_APP_ID = os.environ.get("LuisAppId", "")
     LUIS_API_KEY = os.environ.get("LuisAPIKey", "")
     # LUIS endpoint host name, ie "westus.api.cognitive.microsoft.com"

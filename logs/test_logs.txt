@@ -1,0 +1,62 @@
+Ngrok Logger starting
+t=2022-10-04T19:54:16+0200 lvl=info msg="no configuration paths supplied"
+
+
+t=2022-10-04T19:54:16+0200 lvl=info msg="ignoring default config path, could not stat it" path=C:\\Users\\Tristan/.ngrok2/ngrok.yml err="CreateFile C:\\Users\\Tristan/.ngrok2/ngrok.yml: The system cannot find the path specified."
+
+
+t=2022-10-04T19:54:16+0200 lvl=info msg="starting web service" obj=web addr=127.0.0.1:4040
+
+
+t=2022-10-04T19:54:16+0200 lvl=info msg=start pg=/api/tunnels id=4386e007e4c93870
+
+
+t=2022-10-04T19:54:16+0200 lvl=warn msg="ngrok is not yet ready to start tunnels" pg=/api/tunnels id=4386e007e4c93870 err="a successful ngrok tunnel session has not yet been established"
+t=2022-10-04T19:54:16+0200 lvl=info msg=end pg=/api/tunnels id=4386e007e4c93870 status=503 dur=533.6µs
+
+
+t=2022-10-04T19:54:16+0200 lvl=info msg=start pg=/api/tunnels id=ed8f2980898be0cc
+
+
+t=2022-10-04T19:54:16+0200 lvl=warn msg="ngrok is not yet ready to start tunnels" pg=/api/tunnels id=ed8f2980898be0cc err="a successful ngrok tunnel session has not yet been established"
+t=2022-10-04T19:54:16+0200 lvl=info msg=end pg=/api/tunnels id=ed8f2980898be0cc status=503 dur=0s
+
+
+t=2022-10-04T19:54:16+0200 lvl=info msg="tunnel session started" obj=tunnels.session
+t=2022-10-04T19:54:16+0200 lvl=info msg="client session established" obj=csess id=f07f1c76dca6
+
+
+t=2022-10-04T19:54:16+0200 lvl=info msg=start pg=/api/tunnels id=320a1f973bc3d10a
+
+
+t=2022-10-04T19:54:16+0200 lvl=info msg="started tunnel" obj=tunnels name="931007f0-4341-11ed-a767-45b75a198b71 (http)" addr=http://localhost:1832 url=http://77d3-82-65-107-32.ngrok.io
+t=2022-10-04T19:54:16+0200 lvl=info msg="started tunnel" obj=tunnels name=931007f0-4341-11ed-a767-45b75a198b71 addr=http://localhost:1832 url=https://77d3-82-65-107-32.ngrok.io
+
+
+t=2022-10-04T19:54:16+0200 lvl=info msg=end pg=/api/tunnels id=320a1f973bc3d10a status=201 dur=229.2043ms
+
+
+t=2022-10-04T19:54:17+0200 lvl=info msg="join connections" obj=join id=3a713526d2cf l=[::1]:1832 r=82.65.107.32:1359
+
+
+t=2022-10-04T19:55:17+0200 lvl=info msg="join connections" obj=join id=33cc3322144f l=[::1]:1832 r=82.65.107.32:1407
+
+
+t=2022-10-04T19:56:17+0200 lvl=info msg="join connections" obj=join id=9408464841f5 l=[::1]:1832 r=82.65.107.32:1057
+
+
+t=2022-10-04T19:57:17+0200 lvl=info msg="join connections" obj=join id=81cc0be27e3d l=[::1]:1832 r=82.65.107.32:8512
+
+
+t=2022-10-04T19:58:17+0200 lvl=info msg="join connections" obj=join id=ceb355c139e0 l=[::1]:1832 r=82.65.107.32:8568
+
+
+t=2022-10-04T19:59:17+0200 lvl=info msg="join connections" obj=join id=c239fb1527d9 l=[::1]:1832 r=82.65.107.32:1031
+
+
+t=2022-10-04T20:00:37+0200 lvl=info msg="join connections" obj=join id=98ceabf47c15 l=[::1]:1832 r=82.65.107.32:1051
+
+
+t=2022-10-04T20:01:04+0200 lvl=info msg="join connections" obj=join id=237f3a0456ba l=[::1]:1832 r=82.65.107.32:1032
+
+
