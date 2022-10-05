@@ -22,6 +22,15 @@ jobs:
         with:
           python-version: '3.9'
 
+      - name: Environment variables for the Build Action
+        env: 
+          AppInsightsInstrumentationKey: ${{ secrets.APPINSIGHTSINSTRUMENTATIONKEY }}
+          LuisAPIHostName: ${{ secrets.LUISAPIHOSTNAME }}
+          LuisAPIKey: ${{ secrets.LUISAPIKEY }}
+          LuisAppId: ${{ secrets.LUISAPPID }}
+          MicrosoftAppPassword: ${{ secrets.MICROSOFTAPPPASSWORD }}
+          MicrosoftAppId: ${{ secrets.MICROSOFTAPPID }} 
+
       - name: Create and start virtual environment
         run: |
           python -m venv venv
@@ -52,8 +61,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: python-app
-          path: .
-          
+          path: .          
+
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
