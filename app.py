@@ -98,7 +98,9 @@ async def messages(req: Request) -> Response:
         return json_response(data=response.body, status=response.status)
     return Response(status=HTTPStatus.OK)
  
-
+# we create the following function so that it can be called on application deployment
+# On the Azure web app, update <Startup Command> with:
+# python3.9 -m aiohttp.web -H 0.0.0.0 -P 8000 app:create_app
 def create_app(argv):
     APP = web.Application(middlewares=[bot_telemetry_middleware, aiohttp_error_middleware])
     APP.router.add_post("/api/messages", messages)
