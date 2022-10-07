@@ -8,7 +8,7 @@
             "id": "472ff6b0-440e-11ed-a870-6b5014419a0f",
             "appId": "",
             "appPassword": "",
-            "endpoint": "http://0.0.0.0:3978/api/messages"
+            "endpoint": "http://0.0.0.0:8000/api/messages"
         }
     ],
     "padlock": "",
