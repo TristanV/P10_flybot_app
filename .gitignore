@@ -1,6 +1,9 @@
 # Custom logs
 logs/
 
+# Dev versus Production environment : do not push the file .development
+.development
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
