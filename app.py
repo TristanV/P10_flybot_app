@@ -27,7 +27,7 @@ from botbuilder.integration.applicationinsights.aiohttp import (
     bot_telemetry_middleware,
 )
 
-from config import DefaultConfig
+from config import DefaultConfig,printConfig
 from dialogs import MainDialog, BookingDialog
 from bots import DialogAndWelcomeBot
 
@@ -35,16 +35,6 @@ from adapter_with_error_handler import AdapterWithErrorHandler
 from flight_booking_recognizer import FlightBookingRecognizer
 
 CONFIG = DefaultConfig()
-
-def printConfig(conf):
-    vars = ['PORT','','','','','','']
-    print("PORT:",conf.PORT)
-    print("APP_ID:",conf.APP_ID)
-    print("APP_PASSWORD:",conf.APP_PASSWORD)
-    print("LUIS_APP_ID:",conf.LUIS_APP_ID)
-    print("LUIS_API_KEY:",conf.LUIS_API_KEY)
-    print("LUIS_API_HOST_NAME:",conf.LUIS_API_HOST_NAME)
-    print("APPINSIGHTS_INSTRUMENTATION_KEY:",conf.APPINSIGHTS_INSTRUMENTATION_KEY) 
 
 # Create adapter.
 # See https://aka.ms/about-bot-adapter to learn more about how bots work.
@@ -99,17 +89,20 @@ async def messages(req: Request) -> Response:
 # On the Azure web app, update <Startup Command> with:
 # python3.9 -m aiohttp.web -H 0.0.0.0 -P 8000 app:create_app
 def create_app(argv):
-    print("Creating Application")
-    printConfig(CONFIG) 
+    if CONFIG.ENVIRONMENT == 'DEV':
+        print("Creating Application")
+        printConfig(CONFIG) 
     APP = web.Application(middlewares=[bot_telemetry_middleware, aiohttp_error_middleware])
     APP.router.add_post("/api/messages", messages)
-    print("Application created")
+    if CONFIG.ENVIRONMENT == 'DEV':
+        print("Application created")
     return APP
 
-if __name__ == "__main__":   
+if __name__ == "__main__":  
     APP = create_app(None)
     try:
-        print("Now running the web app")
+        if CONFIG.ENVIRONMENT == 'DEV':
+            print("Now running the web app")
         web.run_app(APP, host="0.0.0.0", port=CONFIG.PORT)
     except Exception as error:
         raise error

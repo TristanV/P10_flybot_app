@@ -12,12 +12,15 @@ class DefaultConfig:
 
     PORT = 8000 # 3978
 
+    ENVIRONMENT = 'UNKNOWN'
     if os.path.isfile(".development") :
         print("running Dev environment")
+        ENVIRONMENT = 'DEV'
         APP_ID = ""
         APP_PASSWORD = ""
     else:
         print("running Production environment")
+        ENVIRONMENT = 'PROD'
         #note that the user managed identity has no password (blank) but the environment variable cannot be blank, so we use a single space that needs to be removed
         #we also want to test the bot before registering it on azure. in this case the MicrosoftAppId must remain blank too in the environment variables 
         APP_ID = os.environ.get("MicrosoftAppId", "").strip()  
@@ -31,6 +34,7 @@ class DefaultConfig:
 
 
 def printConfig(conf):
+    print("ENVIRONMENT:",conf.ENVIRONMENT)
     print("PORT:",conf.PORT)
     print("APP_ID:",conf.APP_ID)
     print("APP_PASSWORD:",conf.APP_PASSWORD)
