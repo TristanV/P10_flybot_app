@@ -1,1 +1,0 @@
-App ID for the registered Bot on Azure : a969f045-4a6b-4f8b-940c-67465f73ac36
