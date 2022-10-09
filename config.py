@@ -11,13 +11,15 @@ class DefaultConfig:
 
 
     PORT = 8000 # 3978
-
+    HOST = "localhost"
     ENVIRONMENT = 'UNKNOWN'
     if os.path.isfile(".development") :
         print("running Dev environment")
         ENVIRONMENT = 'DEV'
         APP_ID = ""
         APP_PASSWORD = ""
+        PORT = 3978
+        HOST = "localhost"
     else:
         print("running Production environment")
         ENVIRONMENT = 'PROD'
@@ -25,6 +27,8 @@ class DefaultConfig:
         #we also want to test the bot before registering it on azure. in this case the MicrosoftAppId must remain blank too in the environment variables 
         APP_ID = os.environ.get("MicrosoftAppId", "").strip()  
         APP_PASSWORD = os.environ.get("MicrosoftAppPassword", "").strip()
+        PORT = 8000
+        HOST = "0.0.0.0"
 
     LUIS_APP_ID = os.environ.get("LuisAppId", "")
     LUIS_API_KEY = os.environ.get("LuisAPIKey", "")
@@ -36,6 +40,7 @@ class DefaultConfig:
 def printConfig(conf):
     print("ENVIRONMENT:",conf.ENVIRONMENT)
     print("PORT:",conf.PORT)
+    print("HOST:",conf.HOST)
     print("APP_ID:",conf.APP_ID)
     print("APP_PASSWORD:",conf.APP_PASSWORD)
     print("LUIS_APP_ID:",conf.LUIS_APP_ID)

@@ -103,6 +103,6 @@ if __name__ == "__main__":
     try:
         if CONFIG.ENVIRONMENT == 'DEV':
             print("Now running the web app")
-        web.run_app(APP, host="0.0.0.0", port=CONFIG.PORT)
+        web.run_app(APP, host=CONFIG.HOST, port=CONFIG.PORT)
     except Exception as error:
         raise error
