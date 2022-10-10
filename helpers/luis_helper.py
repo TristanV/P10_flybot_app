@@ -9,6 +9,7 @@ from booking_details import BookingDetails
 
 
 luis_bot_entities_mapping = {'or_city': 'origin', 'dst_city':'destination', 'str_date': 'start_date', 'end_date': 'end_date', 'budget': 'budget'}
+
 luis_entities_type = {'or_city': 'geographyV2_city', 'dst_city':'geographyV2_city', 'str_date': 'datetime', 'end_date': 'datetime', 'budget': 'number'}
 
 
@@ -54,12 +55,17 @@ class LuisHelper:
             #     else None
             # )
 
-            if intent == Intent.BOOK_FLIGHT.value:
+            if intent == Intent.BOOK_FLIGHT.value:       
+                # print("Book flight intent recognized",recognizer_result)         
+                # print("Your prompt was",recognizer_result['text'])
+                # print("---")
                 result = BookingDetails()
+                
+                result.initial_prompt = recognizer_result.text  
 
                 for (key, type) in luis_entities_type.items():
+                    print("--- fetching entity item ",key,type)
                     entity = LuisHelper._get_entity(recognizer_result, key, type)
-
                 # # We need to get the result from the LUIS JSON which at every level returns an array.
                 # to_entities = recognizer_result.entities.get("$instance", {}).get(
                 #     "To", []
@@ -104,6 +110,7 @@ class LuisHelper:
 
                     if entity is not None:
                         setattr(result, luis_bot_entities_mapping[key], entity)
+                     
         except Exception as exception:
             print(exception)
 
@@ -113,6 +120,7 @@ class LuisHelper:
         """
         Returns the entity value for a given key and its corresponding type, extracted from the LUIS result.
         """
+         
         # entity "key" not found
         if (recognizer_result.entities.get("$instance") is None
             or recognizer_result.entities.get(key) is None
@@ -120,8 +128,7 @@ class LuisHelper:
             return None
 
         score = 0
-        index = None
-
+        index = None 
         # get the index of the entity "key" having the best score in the recognizer results
         for i, entity in enumerate(recognizer_result.entities.get("$instance").get(key)):
             if entity['score'] > score:
@@ -132,6 +139,11 @@ class LuisHelper:
 
         score = 100
         index = None
+ 
+
+        # if the entity type is absent, let's consider the entity missing
+        if recognizer_result.entities.get(type) is None:
+            return None
 
         # among the types in the recognizer results, let's find the one now that minimizes the overlap between the selected entity
         for i, entity in enumerate(recognizer_result.entities.get("$instance").get(type)):
@@ -143,10 +155,9 @@ class LuisHelper:
 
         # if the entity type was not found in the recognized result, let's consider this entity as missing
         if (index is None
-            or recognizer_result.entities.get(type) is None
             or len(recognizer_result.entities.get(type)) <= index):
             return None
-        
+         
         # finally convert the result and return the entity value
         # TODO : handle datetime ranges and resolutions
         return (

@@ -14,13 +14,14 @@ from botbuilder.core import (
     BotTelemetryClient,
     NullTelemetryClient,
 )
-from botbuilder.schema import InputHints
+from botbuilder.schema import InputHints, Attachment
 
 from booking_details import BookingDetails
 from flight_booking_recognizer import FlightBookingRecognizer
 from helpers.luis_helper import LuisHelper, Intent
 from .booking_dialog import BookingDialog
 
+import json,re
 
 class MainDialog(ComponentDialog):
     def __init__(
@@ -81,11 +82,11 @@ class MainDialog(ComponentDialog):
             return await step_context.begin_dialog(
                 self._booking_dialog_id, BookingDetails()
             )
-
+ 
         # Call LUIS and gather any potential booking details. (Note the TurnContext has the response to the prompt.)
         intent, luis_result = await LuisHelper.execute_luis_query(
             self._luis_recognizer, step_context.context
-        )
+        ) 
 
         if intent == Intent.BOOK_FLIGHT.value and luis_result:
             # Show a warning for Origin and Destination if we can't resolve them.
@@ -122,12 +123,15 @@ class MainDialog(ComponentDialog):
 
             # Now we have all the booking details call the booking service.
 
-            # If the call to the booking service was successful tell the user.
-            # time_property = Timex(result.travel_date)
-            # travel_date_msg = time_property.to_natural_language(datetime.now())
-            msg_txt = f"To satisfy your demand, I have you booked a flight to {result.destination} from {result.origin}, departure date is {result.start_date} and return date is {result.end_date}, your budget is : {result.budget}"
-            message = MessageFactory.text(msg_txt, msg_txt, InputHints.ignoring_input)
-            await step_context.context.send_activity(message)
+            # # If the call to the booking service was successful tell the user.
+            # # time_property = Timex(result.travel_date)
+            # # travel_date_msg = time_property.to_natural_language(datetime.now())
+            # msg_txt = f"To satisfy your demand, I have you booked a flight to {result.destination} from {result.origin}, departure date is {result.start_date} and return date is {result.end_date}, your budget is : {result.budget}"
+            # message = MessageFactory.text(msg_txt, msg_txt, InputHints.ignoring_input)
+            # await step_context.context.send_activity(message)
+            card = self.create_flight_ticket_attachment(result)
+            response = MessageFactory.attachment(card)
+            await step_context.context.send_activity(response)
 
         prompt_message = "Thanks for using this service. \r\n What else can I do for you?"
         return await step_context.replace_dialog(self.id, prompt_message)
@@ -150,3 +154,38 @@ class MainDialog(ComponentDialog):
     #             message_text, message_text, InputHints.ignoring_input
     #         )
     #         await context.send_activity(message)
+ 
+     
+    def replaceTemplateKeys(self, templateCard: dict, data: dict):
+        """Replace keys in a template (card) by their values provided in the data set."""
+        string_temp = str(templateCard)
+        for key in data:
+            pattern = "\${" + key + "}"
+            string_temp = re.sub(pattern, str(data[key]), string_temp)
+        return eval(string_temp)
+
+    def create_flight_ticket_attachment(self, result):
+        """Create an adaptive card."""
+        # see https://messagecardplayground.azurewebsites.net/
+
+        path =  "./bots/resources/bookedFlightCard.json"
+        with open(path) as card_file:
+            card = json.load(card_file)
+        
+        origin = result.origin
+        destination = result.destination
+        start_date = result.start_date
+        end_date = result.end_date
+        budget = result.budget
+
+        templateCard = {
+            "origin": origin, 
+            "destination": destination,
+            "start_date": start_date,
+            "end_date": end_date,
+            "budget": budget}
+
+        flightCard = self.replaceTemplateKeys(card, templateCard)
+
+        return Attachment(
+            content_type="application/vnd.microsoft.card.adaptive", content=flightCard)

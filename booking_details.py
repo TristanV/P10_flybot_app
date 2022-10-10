@@ -5,6 +5,7 @@
 class BookingDetails:
     def __init__(
         self,
+        initial_prompt: str = None,
         destination: str = None,
         origin: str = None,
         start_date: str = None,
@@ -13,6 +14,7 @@ class BookingDetails:
     ):    
 #        if unsupported_airports is None:
 #            unsupported_airports = []
+        self.initial_prompt = initial_prompt
         self.destination = destination
         self.origin = origin
         self.start_date = start_date

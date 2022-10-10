@@ -59,6 +59,7 @@ TELEMETRY_CLIENT = ApplicationInsightsTelemetryClient(
 )
 
 # Code for enabling activity and personal information logging.
+# Comment the two following lines to stop connecting with Insights
 # TELEMETRY_LOGGER_MIDDLEWARE = TelemetryLoggerMiddleware(telemetry_client=TELEMETRY_CLIENT, log_personal_information=True)
 # ADAPTER.use(TELEMETRY_LOGGER_MIDDLEWARE)
 

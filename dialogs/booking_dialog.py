@@ -172,9 +172,7 @@ class BookingDialog(CancelAndHelpDialog):
         
         prompt_message = MessageFactory.text(msg, msg, InputHints.expecting_input)  
         # Offer a YES/NO prompt.
-        return await step_context.prompt(
-            ConfirmPrompt.__name__, PromptOptions(prompt=MessageFactory.text(msg))
-        )
+        return await step_context.prompt(ConfirmPrompt.__name__, PromptOptions(prompt=MessageFactory.text(msg)))
  
     async def final_step(self, step_context: WaterfallStepContext) -> DialogTurnResult:
         """Complete the interaction, track data, and end the dialog."""
@@ -183,6 +181,7 @@ class BookingDialog(CancelAndHelpDialog):
         booking_details = step_context.options
 
         properties = {}
+        properties["initial_prompt"] = booking_details.initial_prompt
         properties["origin"] = booking_details.origin
         properties["destination"] = booking_details.destination
         properties["start_date"] = booking_details.start_date
@@ -190,14 +189,16 @@ class BookingDialog(CancelAndHelpDialog):
         properties["budget"] = booking_details.budget
          
         if step_context.result:
+            # print("We've got a success!")
+            # print(step_context.result)
             self.telemetry_client.track_trace("SUCCESS", properties, "INFO")
             return await step_context.end_dialog(booking_details) 
         else: 
+            # print("We've got a fail!")
+            # print(step_context.result)
             fail_msg = "I apologize this service could not help you. Please call 123456789 to talk with our hotline officers!"
             prompt_fail_msg = MessageFactory.text(fail_msg, fail_msg, InputHints.ignoring_input)
             await step_context.context.send_activity(prompt_fail_msg)
-
-            # Track NO data
             self.telemetry_client.track_trace("FAIL", properties, "ERROR")
 
         return await step_context.end_dialog()
