@@ -21,6 +21,7 @@ env:
 jobs:
   show_environment:
     name: "Show environment variables"
+    environment: production
     runs-on: ubuntu-latest
 
     steps:
@@ -29,6 +30,7 @@ jobs:
           env
 
   build:
+    environment: production
     runs-on: ubuntu-latest
 
     steps:
@@ -48,7 +50,14 @@ jobs:
         run: pip install -r requirements.txt
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-      - name: Run tests with pytest        
+      - name: Run tests with pytest
+        env: 
+          AppInsightsInstrumentationKey: ${{ secrets.APPINSIGHTSINSTRUMENTATIONKEY }}
+          LuisAPIHostName: ${{ secrets.LUISAPIHOSTNAME }}
+          LuisAPIKey: ${{ secrets.LUISAPIKEY }}
+          LuisAppId: ${{ secrets.LUISAPPID }}
+          MicrosoftAppPassword: ${{ secrets.MICROSOFTAPPPASSWORD }}
+          MicrosoftAppId: ${{ secrets.MICROSOFTAPPID }}         
         run: | 
           pytest test_flybot.py --asyncio-mode=strict --disable-warnings
       
