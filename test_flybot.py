@@ -8,7 +8,7 @@ from botbuilder.ai.luis import LuisApplication, LuisRecognizer, LuisPredictionOp
 from botbuilder.core import TurnContext 
 from botbuilder.core.adapters import TestAdapter 
 
-from config import DefaultConfig
+from config import DefaultConfig, printConfig
 
 from flight_booking_recognizer import FlightBookingRecognizer
 from booking_details import BookingDetails
@@ -25,6 +25,19 @@ def check_pytest_asyncio_installed():
     if not util.find_spec("pytest_asyncio"):
         print("You need to install pytest-asyncio first!",file=sys.stderr)
         sys.exit(os.EX_SOFTWARE)
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+def check_luis_env():
+    print("Environment variables",file=sys.stderr)
+    
+    print("LUIS_APP_ID:"+CONFIG.LUIS_APP_ID,file=sys.stderr)
+    print("LUIS_API_KEY:"+CONFIG.LUIS_API_KEY,file=sys.stderr)
+    print("LUIS_API_HOST_NAME:"+CONFIG.LUIS_API_HOST_NAME,file=sys.stderr)
+    assert CONFIG.LUIS_APP_ID
+    assert CONFIG.LUIS_API_KEY
+    assert CONFIG.LUIS_API_HOST_NAME
+
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 async def return_after_sleep(res):
