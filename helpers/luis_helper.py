@@ -64,7 +64,7 @@ class LuisHelper:
                 result.initial_prompt = recognizer_result.text  
 
                 for (key, type) in luis_entities_type.items():
-                    print("--- fetching entity item ",key,type)
+                    # print("--- fetching entity item ",key,type)
                     entity = LuisHelper._get_entity(recognizer_result, key, type)
                 # # We need to get the result from the LUIS JSON which at every level returns an array.
                 # to_entities = recognizer_result.entities.get("$instance", {}).get(
