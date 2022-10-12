@@ -13,8 +13,9 @@ from config import DefaultConfig, printConfig
 from flight_booking_recognizer import FlightBookingRecognizer
 from booking_details import BookingDetails
 from helpers.luis_helper import LuisHelper, Intent
+from dialogs.booking_dialog import BookingDialog
 
-import json
+import sys,json
 
 CONFIG = DefaultConfig()
 
@@ -130,3 +131,23 @@ async def test_luis_results():
         )
 
 
+
+from datatypes_date_time.timex import Timex
+
+def test_booking_dialog_is_ambiguous():
+    dates_str=["2022-10-12"]
+    ambiguous_dates_str=["2 december 2022","tomorrow"] 
+    bd=BookingDialog()
+    for d in dates_str:
+        tx = Timex(d)
+        # print(tx,file=sys.stderr)
+        # print(tx.types,file=sys.stderr)
+        is_ambiguous = bd.is_ambiguous(timex = d)
+        assert d!="" and  not is_ambiguous
+
+    for d in ambiguous_dates_str:
+        tx = Timex(d)
+        # print(tx,file=sys.stderr)
+        # print(tx.types,file=sys.stderr)
+        is_ambiguous = bd.is_ambiguous(timex = d)
+        assert d!="" and is_ambiguous        
